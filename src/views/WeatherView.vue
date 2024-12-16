@@ -1,5 +1,5 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div></div>
+  <div>Select Country from header, for weather details.</div>
 </template>

@@ -10,10 +10,10 @@ export default defineConfig({
     ui({
       ui: {
         colors: {
-          primary: 'green',
-          neutral: 'slate'
-        }
-      }
+          primary: 'amber',
+          neutral: 'slate',
+        },
+      },
     }),
     AutoImports({ imports: ['vue'] }),
   ],

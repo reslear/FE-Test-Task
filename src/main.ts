@@ -1,22 +1,16 @@
 import { createApp } from 'vue'
-import { createRouter, createWebHistory } from 'vue-router'
 import uiPlugin from '@nuxt/ui/vue-plugin'
-import { createPinia } from 'pinia'
-import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+import { VueQueryPlugin } from '@tanstack/vue-query'
 import App from './app.vue'
-import { routes } from './routes'
+import { router } from './plugins/router'
+import { pinia } from './plugins/pinia'
 
-const pinia = createPinia()
-pinia.use(piniaPluginPersistedstate)
-
-const router = createRouter({
-  routes,
-  history: createWebHistory(),
-})
 const app = createApp(App)
-
-app.use(pinia)
-app.use(router)
-app.use(uiPlugin)
+  .use(pinia)
+  .use(router)
+  .use(uiPlugin)
+  .use(VueQueryPlugin, {
+    enableDevtoolsV6Plugin: true,
+  })
 
 app.mount('#app')
