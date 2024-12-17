@@ -31,13 +31,13 @@ export const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
 })
 
-router.beforeEach(async (to, from) => {
-  const { isAuthenticated } = useAuthStore()
+router.beforeEach(async (to) => {
+  const { isAuthenticated, checkTokenExpired } = useAuthStore()
 
   if (
     to.meta.requiresAuth &&
     // make sure the user is authenticated
-    !isAuthenticated &&
+    (!isAuthenticated || (isAuthenticated && checkTokenExpired())) &&
     // ❗️ Avoid an infinite redirect
     to.path !== '/login'
   ) {

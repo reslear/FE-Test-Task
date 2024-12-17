@@ -1,8 +1,5 @@
 import { defineStore } from 'pinia'
 
-// TODO: replace to 15 min
-const EXPIRY_TIME = 1 * 60 * 1000
-
 export const useAuthStore = defineStore(
   'auth',
   () => {
@@ -13,27 +10,25 @@ export const useAuthStore = defineStore(
       () => token.value !== null && !checkTokenExpired()
     )
 
-    function login(data: { token: string }) {
+    function login(data: { token: string; tokenExpiry: number }) {
       token.value = data.token
-      tokenExpiry.value = Date.now() + EXPIRY_TIME
-    }
-
-    function logout() {
-      token.value = null
-      tokenExpiry.value = 0
+      tokenExpiry.value = data.tokenExpiry
     }
 
     // helper's
     function checkTokenExpired() {
-      console.log('checkTokenExpiration')
-      if (tokenExpiry.value === null) return true
       return Date.now() > tokenExpiry.value
+    }
+
+    function $reset() {
+      token.value = null
+      tokenExpiry.value = 0
     }
 
     return {
       isAuthenticated,
       login,
-      logout,
+      $reset,
       checkTokenExpired,
       token,
       tokenExpiry,

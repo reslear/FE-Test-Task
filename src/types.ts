@@ -2,10 +2,12 @@
 export type LoginRequest = {
   email: string
   password: string
+  short?: boolean
 }
 
 export type LoginResponse = {
   token: string
+  tokenExpiry: number
 }
 
 // weather types

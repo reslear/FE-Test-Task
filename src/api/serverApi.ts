@@ -62,20 +62,14 @@ const weatherData = {
 } as Record<WeatherRequest['country'], string[]>
 
 // Server API response type with status code
-type ServerApiResponse<T = any> = Promise<
-  | T
-  | {
-      message: string
-      status: number
-    }
->
+type ServerApiResponse<T = any> = Promise<T>
 
 export const serverApi = {
   login: async (body: LoginRequest): ServerApiResponse<LoginResponse> => {
     // Simulate server delay
     await new Promise((resolve) => setTimeout(resolve, 1500))
 
-    const { email, password } = body
+    const { email, password, short } = body
 
     const validCredentials = {
       email: 'example@email.com',
@@ -87,10 +81,11 @@ export const serverApi = {
       password === validCredentials.password
     ) {
       token = nanoid(32)
-      tokenExpiry = Date.now() + 15 * 60 * 1000
-      return { token }
+
+      tokenExpiry = Date.now() + (short ? 0.3 : 15) * 60 * 1000
+      return { token, tokenExpiry }
     } else {
-      return { status: 409, message: 'Invalid email or password' }
+      throw httpError(409, 'Invalid email or password')
     }
   },
 
@@ -101,26 +96,30 @@ export const serverApi = {
     const { country } = body
 
     if (!token || (tokenExpiry && Date.now() > tokenExpiry)) {
-      throw new Error('Unauthorized: Token expired or not provided')
+      throw httpError(401, 'Unauthorized: Token expired or not provided')
     }
 
     if (country in weatherData) {
       const weather = weatherData[country]
       return { country, weather }
     } else {
-      return { status: 404, message: 'Country not found' }
+      throw httpError(404, 'Country not found')
     }
   },
 
   cities: async (): ServerApiResponse<CitiesResponse> => {
-    // Simulate server delay
-
     if (!token || (tokenExpiry && Date.now() > tokenExpiry)) {
-      return {
-        status: 401,
-        message: 'Unauthorized: Token expired or not provided',
-      }
+      throw httpError(401, 'Unauthorized: Token expired or not provided')
     }
     return { cities: Object.keys(weatherData) }
   },
+}
+
+// error helper
+function httpError(statusCode: number, statusText: string) {
+  return new Response(null, {
+    status: statusCode,
+    statusText: statusText,
+    headers: { 'Content-Type': 'application/json' },
+  })
 }

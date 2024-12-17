@@ -13,10 +13,12 @@ const timeAgo = useTimeAgo(tokenExpiry, {
   updateInterval: 1000,
 })
 
-const isExpired = computed(() => authStore.checkTokenExpired())
+const isExpired = computed(
+  () => timeAgo.value.includes('ago') && authStore.checkTokenExpired()
+)
 
 function logout() {
-  authStore.logout()
+  authStore.$reset()
   router.push('/login')
 }
 </script>

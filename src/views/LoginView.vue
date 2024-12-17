@@ -14,6 +14,7 @@ const authStore = useAuthStore()
 const schema = z.object({
   email: z.string().email('Invalid email'),
   password: z.string().min(7, 'Must be at least 7 characters'),
+  short: z.boolean().optional(),
 })
 
 type Schema = z.output<typeof schema>
@@ -21,6 +22,7 @@ type Schema = z.output<typeof schema>
 const state = reactive<Partial<Schema>>({
   email: undefined,
   password: undefined,
+  short: undefined,
 })
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
@@ -30,6 +32,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     if (data.token) {
       authStore.login({
         token: data.token,
+        tokenExpiry: data.tokenExpiry,
       })
 
       toast.add({
@@ -65,6 +68,8 @@ function _testSetCorrectData() {
     password: 'example',
   })
 }
+
+onMounted(() => {})
 </script>
 
 <template>
@@ -106,6 +111,10 @@ function _testSetCorrectData() {
             type="password"
             class="w-full"
           />
+        </UFormField>
+
+        <UFormField name="short" label="30 sec expire">
+          <USwitch v-model="state.short" />
         </UFormField>
 
         <div class="flex gap-2 items-center justify-between">
