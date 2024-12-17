@@ -28,7 +28,7 @@ export const routes: RouteRecordRaw[] = [
 export const router = createRouter({
   routes,
   // hash mode for Github Pages
-  history: createWebHashHistory(),
+  history: createWebHashHistory(import.meta.env.BASE_URL),
 })
 
 router.beforeEach(async (to, from) => {

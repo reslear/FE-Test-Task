@@ -38,7 +38,7 @@ jobs:
 
       - run: pnpm install
 
-      - run: pnpm build --base /FE-Test-Task/
+      - run: pnpm build --base /weather-app/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
