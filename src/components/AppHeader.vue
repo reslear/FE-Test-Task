@@ -1,13 +1,10 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
 import type { NavigationMenuItem } from '@nuxt/ui'
 import { useCities } from '../composables/useApi'
-import { useAuthStore } from '../stores/authStore'
+
 import { COUNTRY_CODES } from '../consts'
 
-const router = useRouter()
 const { data: citiesData } = useCities()
-const authStore = useAuthStore()
 
 const items = computed((): NavigationMenuItem[] => {
   if (!citiesData.value) return []
@@ -30,11 +27,6 @@ const items = computed((): NavigationMenuItem[] => {
     ...citiesArr,
   ]
 })
-
-function logout() {
-  authStore.logout()
-  router.push('/login')
-}
 </script>
 
 <template>
@@ -45,16 +37,5 @@ function logout() {
       class="w-auto overflow-x-auto"
     >
     </UNavigationMenu>
-
-    <div class="flex items-center">
-      <UButton
-        icon="i-lucide-power"
-        color="error"
-        variant="soft"
-        size="sm"
-        title="Logout"
-        @click="logout()"
-      ></UButton>
-    </div>
   </header>
 </template>

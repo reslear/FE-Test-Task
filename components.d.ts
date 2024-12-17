@@ -11,6 +11,7 @@ declare module 'vue' {
     AppHeader: typeof import('./src/components/AppHeader.vue')['default']
     AppLogo: typeof import('./src/components/AppLogo.vue')['default']
     CountryItem: typeof import('./src/components/CountryItem.vue')['default']
+    NotFound: typeof import('./src/components/NotFound.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     UAccordion: typeof import('./node_modules/.pnpm/@nuxt+ui@3.0.0-alpha.10_@babel+parser@7.26.3_embla-carousel@8.5.1_radix-vue@1.9.11_vue@3.5.13_ee23vaoi2uq3jvjrmah6qfmije/node_modules/@nuxt/ui/dist/runtime/components/Accordion.vue')['default']

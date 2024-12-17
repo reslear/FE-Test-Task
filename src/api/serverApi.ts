@@ -61,8 +61,17 @@ const weatherData = {
   ],
 } as Record<WeatherRequest['country'], string[]>
 
+// Server API response type with status code
+type ServerApiResponse<T = any> = Promise<
+  | T
+  | {
+      message: string
+      status: number
+    }
+>
+
 export const serverApi = {
-  login: async (body: LoginRequest): Promise<LoginResponse> => {
+  login: async (body: LoginRequest): ServerApiResponse<LoginResponse> => {
     // Simulate server delay
     await new Promise((resolve) => setTimeout(resolve, 1500))
 
@@ -81,11 +90,11 @@ export const serverApi = {
       tokenExpiry = Date.now() + 15 * 60 * 1000
       return { token }
     } else {
-      throw new Error('Invalid email or password')
+      return { status: 409, message: 'Invalid email or password' }
     }
   },
 
-  weather: async (body: WeatherRequest): Promise<WeatherResponse> => {
+  weather: async (body: WeatherRequest): ServerApiResponse<WeatherResponse> => {
     // Simulate server delay
     await new Promise((resolve) => setTimeout(resolve, 1500))
 
@@ -99,16 +108,19 @@ export const serverApi = {
       const weather = weatherData[country]
       return { country, weather }
     } else {
-      throw new Error('Country not found')
+      return { status: 404, message: 'Country not found' }
     }
   },
 
-  cities: async (): Promise<CitiesResponse> => {
+  cities: async (): ServerApiResponse<CitiesResponse> => {
     // Simulate server delay
 
-    // if (!token || (tokenExpiry && Date.now() > tokenExpiry)) {
-    //   throw new Error('Unauthorized: Token expired or not provided')
-    // }
+    if (!token || (tokenExpiry && Date.now() > tokenExpiry)) {
+      return {
+        status: 401,
+        message: 'Unauthorized: Token expired or not provided',
+      }
+    }
     return { cities: Object.keys(weatherData) }
   },
 }

@@ -18,6 +18,11 @@ export const routes: RouteRecordRaw[] = [
     component: () => import('../views/WeatherCityView.vue'),
     meta: { requiresAuth: true },
   },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: () => import('../views/NotFound.vue'),
+  },
 ]
 
 export const router = createRouter({

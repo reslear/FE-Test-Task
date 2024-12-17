@@ -1,36 +1,10 @@
 <script setup lang="ts">
-import { useColorMode, useTimeAgo } from '@vueuse/core'
-import { useAuthStore } from '../stores/authStore'
-import { storeToRefs } from 'pinia'
+import { useColorMode } from '@vueuse/core'
 
 const mode = useColorMode()
-const authStore = useAuthStore()
-const { tokenExpiry, isAuthenticated } = storeToRefs(authStore)
-
-const now = Date.now()
-const timeAgo = useTimeAgo(
-  computed(() => tokenExpiry.value),
-  {
-    showSecond: true,
-    updateInterval: 1000,
-  }
-)
 </script>
 
 <template>
-  <div class="flex justify-center">
-    <span
-      class="text-sm"
-      :class="{
-        'text-red-500': tokenExpiry <= now,
-        'text-green-400': tokenExpiry > now,
-      }"
-      v-if="isAuthenticated"
-    >
-      {{ tokenExpiry <= now ? 'Token expired' : 'Token expires in' }}
-      {{ timeAgo }}
-    </span>
-  </div>
   <footer class="flex justify-center items-center gap-2 p-4">
     <UButton
       :icon="mode === 'dark' ? 'i-lucide-moon' : 'i-lucide-sun'"
