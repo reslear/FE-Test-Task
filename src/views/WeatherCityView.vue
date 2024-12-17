@@ -12,16 +12,20 @@ const pageCountry = computed(() => {
 
 const { data: weatherData, isPending, isError, error } = useWeather(pageCountry)
 
+const today = ref(new Date().getDay())
+
 const items = computed(() => {
   if (!weatherData.value) return []
 
   const { weather } = weatherData.value
 
-  return weather.map((item) => {
+  return weather.map((item, i) => {
     const [type, state] = item.toLowerCase().split(', ')
     return {
       type,
       state,
+      // fix index 0 -> 1
+      isToday: i + 1 === today.value,
     }
   })
 })
@@ -42,6 +46,7 @@ const items = computed(() => {
           v-for="(item, i) in items"
           :key="pageCountry + i"
           class="transition hover:-translate-y-1 hover:scale-105"
+          :class="{ 'bg-gray-100': item.isToday }"
         >
           <UIcon
             :name="WEATHER_ICONS[item.type]"
