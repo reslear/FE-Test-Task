@@ -38,9 +38,7 @@ jobs:
 
       - run: pnpm install
 
-      - run: pnpm --filter @belongnet/sdk build
-
-      - run: pnpm --filter playground build --base /sdk/
+      - run: pnpm build --base /FE-Test-Task/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
