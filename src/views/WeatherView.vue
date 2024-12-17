@@ -3,6 +3,9 @@ import { useTimeAgo } from '@vueuse/core'
 import { useAuthStore } from '../stores/authStore'
 import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
+import { useQueryClient } from '@tanstack/vue-query'
+
+const queryClient = useQueryClient()
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -19,6 +22,7 @@ const isExpired = computed(
 
 function logout() {
   authStore.$reset()
+  queryClient.clear()
   router.push('/login')
 }
 </script>

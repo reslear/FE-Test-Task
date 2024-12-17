@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
+import { VueQueryDevtools } from '@tanstack/vue-query-devtools'
 import AppHeader from './components/AppHeader.vue'
 import { useAuthStore } from './stores/authStore'
 const { isAuthenticated } = storeToRefs(useAuthStore())
@@ -22,6 +23,7 @@ const { isAuthenticated } = storeToRefs(useAuthStore())
       <AppFooter />
     </div>
   </UApp>
+  <VueQueryDevtools />
 </template>
 
 <style>

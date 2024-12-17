@@ -8,6 +8,7 @@ import type { LoginRequest, WeatherRequest } from '../types'
  */
 export const useLogin = () =>
   useMutation({
+    mutationKey: ['login'],
     mutationFn: (form: MaybeRefOrGetter<LoginRequest>) =>
       postLogin(toValue(form)),
   })
