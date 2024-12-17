@@ -8,8 +8,9 @@ on:
       - main
 
     paths:
-      - 'playground/**'
+      - 'src/**'
       - '.github/workflows/deploy-pages.yml'
+
   workflow_dispatch:
 
 permissions:
