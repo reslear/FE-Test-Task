@@ -10,8 +10,8 @@ import type {
   WeatherResponse,
 } from '../types'
 
-const TOKEN_EXPIRY = 15 * 60 * 1000 // 15 minutes
-const TOKEN_EXPIRY_SHORT = 30 * 1000 // 30 seconds
+const TOKEN_EXPIRY = 15 * 60 // 15 minutes
+const TOKEN_EXPIRY_SHORT = 30 // 30 seconds
 
 let token: string | null = null
 let tokenExpiry: number | null = null
