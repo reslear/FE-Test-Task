@@ -1,4 +1,4 @@
-Weather App - simple weather app with login and weather forecast.
+# Weather App - simple weather app with login and weather forecast.
 
 - Vue 3, Pinia, Vue Router, TypeScript
 
