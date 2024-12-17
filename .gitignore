@@ -14,3 +14,8 @@ tsconfig.tsbuildinfo
 .env.test.local
 .env.production.local
 .envrc
+
+
+# Auto-generated type declarations
+auto-imports.d.ts
+components.d.ts
