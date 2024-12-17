@@ -10,13 +10,18 @@ pnpm install
 ```
 
 ```bash
-# serve with hot reload at localhost:8080
-pnpm run dev
+# serve with hot reload at localhost:5173
+pnpm dev
 ```
 
 ```bash
-# build for production with minification
-pnpm run build
+# build for production
+pnpm build
+```
+
+```bash
+# run server
+pnpm server
 ```
 
 ## License
