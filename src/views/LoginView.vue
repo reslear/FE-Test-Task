@@ -3,9 +3,10 @@ import type { FormSubmitEvent } from '@nuxt/ui'
 import { z } from 'zod'
 import { useLogin } from '../composables/useApi'
 import { useAuthStore } from '../stores/authStore'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import AppLogo from '../components/AppLogo.vue'
 
+const route = useRoute()
 const router = useRouter()
 const toast = useToast()
 const { mutateAsync: login, isPending, isError, error } = useLogin()
@@ -30,7 +31,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     const data = await login(event.data)
 
     if (data.token) {
-      authStore.login({
+      authStore.authenticate({
         token: data.token,
         tokenExpiry: data.tokenExpiry,
       })
@@ -39,9 +40,11 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         title: 'Login Success',
         color: 'success',
         type: 'background',
+        duration: 3000,
       })
 
-      router.push('/weather')
+      const { redirect } = route.query
+      router.push(redirect && !Array.isArray(redirect) ? redirect : '/weather')
     } else {
       throw new Error('No token found')
     }
@@ -118,20 +121,18 @@ onMounted(() => {})
         </UFormField>
 
         <div class="flex gap-2 items-center justify-between">
-          <UButton type="submit" size="lg" :loading="isPending">Submit</UButton>
+          <UButton
+            type="submit"
+            size="lg"
+            :loading="isPending"
+            loading-icon="i-lucide-loader"
+            >Submit</UButton
+          >
           <div class="flex gap-2">
-            <UButton
-              size="xs"
-              @click="_testSetWrongData"
-              color="neutral"
-              variant="soft"
+            <UButton @click="_testSetWrongData" color="neutral" variant="soft"
               >Set wrong</UButton
             >
-            <UButton
-              size="xs"
-              @click="_testSetCorrectData"
-              color="neutral"
-              variant="soft"
+            <UButton @click="_testSetCorrectData" color="neutral" variant="soft"
               >Set correct</UButton
             >
           </div>

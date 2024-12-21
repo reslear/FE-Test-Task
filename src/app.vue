@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
 import { useIsFetching } from '@tanstack/vue-query'
 import { VueQueryDevtools } from '@tanstack/vue-query-devtools'
 import AppHeader from './components/AppHeader.vue'
-import { useAuthStore } from './stores/authStore'
-const { isAuthenticated } = storeToRefs(useAuthStore())
+import { useRoute } from 'vue-router'
 
 const isFetching = useIsFetching()
+
+const route = useRoute()
+const isRequiresAuth = computed(() => !!route.meta.requiresAuth)
 </script>
 
 <template>
@@ -16,13 +17,11 @@ const isFetching = useIsFetching()
       vaul-drawer-wrapper
     >
       <UProgress v-if="isFetching" size="xs" :ui="{ root: 'absolute top-0' }" />
-      <AppHeader v-if="isAuthenticated" />
+      <AppHeader v-if="isRequiresAuth" />
       <div
         class="flex-1 flex flex-col items-center justify-around overflow-y-auto w-full py-14 px-4"
       >
-        <Suspense>
-          <RouterView />
-        </Suspense>
+        <RouterView />
       </div>
       <AppFooter />
     </div>

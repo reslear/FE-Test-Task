@@ -32,16 +32,23 @@ export const router = createRouter({
 })
 
 router.beforeEach(async (to) => {
-  const { isAuthenticated, checkTokenExpired } = useAuthStore()
+  const { isLoggedIn } = useAuthStore()
 
   if (
     to.meta.requiresAuth &&
     // make sure the user is authenticated
-    (!isAuthenticated || (isAuthenticated && checkTokenExpired())) &&
+    !isLoggedIn() &&
     // ❗️ Avoid an infinite redirect
     to.path !== '/login'
   ) {
     // redirect the user to the login page
-    return { path: '/login' }
+    return { path: '/login', query: { redirect: to.fullPath } }
   }
 })
+
+declare module 'vue-router' {
+  interface RouteMeta {
+    // must be declared by every route
+    requiresAuth?: boolean
+  }
+}

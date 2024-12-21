@@ -1,40 +1,30 @@
 import { defineStore } from 'pinia'
+import { useCookies } from '@vueuse/integrations/useCookies'
+import { useStorage } from '@vueuse/core'
 
-export const useAuthStore = defineStore(
-  'auth',
-  () => {
-    const token = ref<string | null>(null)
-    const tokenExpiry = ref<number>(0)
+export const useAuthStore = defineStore('auth', () => {
+  // for check if token is expired
+  const tokenExpiry = useStorage('tokenExpiry', 0, sessionStorage)
+  const cookies = useCookies(['token'])
 
-    const isAuthenticated = computed(
-      () => token.value !== null && !checkTokenExpired()
-    )
-
-    function login(data: { token: string; tokenExpiry: number }) {
-      token.value = data.token
-      tokenExpiry.value = data.tokenExpiry
-    }
-
-    // helper's
-    function checkTokenExpired() {
-      return Date.now() > tokenExpiry.value
-    }
-
-    function $reset() {
-      token.value = null
-      tokenExpiry.value = 0
-    }
-
-    return {
-      isAuthenticated,
-      login,
-      $reset,
-      checkTokenExpired,
-      token,
-      tokenExpiry,
-    }
-  },
-  {
-    persist: true,
+  function isLoggedIn() {
+    return !!cookies.get('token')
   }
-)
+
+  function authenticate(data: { token: string; tokenExpiry: number }) {
+    tokenExpiry.value = data.tokenExpiry
+    cookies.set('token', data.token, { expires: new Date(tokenExpiry.value) })
+  }
+
+  function $reset() {
+    cookies.remove('token')
+    tokenExpiry.value = 0
+  }
+
+  return {
+    authenticate,
+    isLoggedIn,
+    tokenExpiry,
+    $reset,
+  }
+})

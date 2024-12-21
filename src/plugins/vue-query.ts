@@ -8,6 +8,10 @@ const queryClient = new QueryClient({
       persister: experimental_createPersister({
         storage: localStorage,
       }),
+      staleTime: 1000 * 60 * 5, // 5 minutes
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      gcTime: 1000 * 60 * 15, // 15 minutes
     },
   },
 })

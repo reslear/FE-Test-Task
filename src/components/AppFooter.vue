@@ -2,6 +2,10 @@
 import { useColorMode } from '@vueuse/core'
 
 const mode = useColorMode()
+
+function toggleMode() {
+  mode.value = mode.value === 'dark' ? 'light' : 'dark'
+}
 </script>
 
 <template>
@@ -11,7 +15,7 @@ const mode = useColorMode()
       color="neutral"
       variant="ghost"
       :aria-label="`Switch to ${mode === 'dark' ? 'light' : 'dark'} mode`"
-      @click="mode = mode === 'dark' ? 'light' : 'dark'"
+      @click="toggleMode()"
       title="Switch color mode"
     />
     <UButton

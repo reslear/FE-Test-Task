@@ -94,9 +94,6 @@ export const serverApi = {
   },
 
   weather: async (body: WeatherRequest): ServerApiResponse<WeatherResponse> => {
-    // Simulate server delay
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-
     const { country } = body
 
     if (!token || (tokenExpiry && Date.now() > tokenExpiry)) {

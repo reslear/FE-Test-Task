@@ -13,6 +13,11 @@ export default defineConfig({
           primary: 'amber',
           neutral: 'slate',
         },
+        toast: {
+          slots: {
+            progress: 'invisible',
+          },
+        },
       },
     }),
     AutoImports({ imports: ['vue'] }),

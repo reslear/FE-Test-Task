@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { NavigationMenuItem } from '@nuxt/ui'
 import { useCities } from '../composables/useApi'
-
 import { COUNTRY_CODES } from '../consts'
 
 const { data: citiesData } = useCities()
